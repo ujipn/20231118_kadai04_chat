@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <h1 class="top">おすすめの合宿プランが見つかる日本最大級の合宿検索サイト</h1>
+    <div class="image-center">
+        <div class="image-container">
+            <img src="logo01.JPG" alt="">
+        </div>
+    </div>
+<!-- やること
+画像保存
+ID紐付け
+投稿へのコメント
+最新投稿を上に表示
+グーグルマップ埋め込み
+投稿検索機能
+おすすめランキング
+投稿者の投稿履歴
+投稿をもっと見る機能
+ -->
+
+    <!-- <form action="">
+    <div>
+        <ul>
+            <li>
+                <a>キーワードから探す</a>
+                <input type="text" id="keywordInput" placeholder="キーワードで検索">
+                <button id="searchButton">検索</button>
+            </li>
+            <li>
+                <a id="searchByArea">都道府県から探す</a>
+      
+                <div id="mapModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a id="searchByFeature">特徴から探す</a>
+              
+                <div id="featureDropdown" class="dropdown-content">
+                    <form id="featureForm">
+                        <div>
+                            <p>宿泊施設の種類：</p>
+                            <select name="accommodationType">
+                                <option value="hotel">ホテル</option>
+                                <option value="inn">旅館</option>
+                                <option value="lodge">ロッジ</option>
+                                <option value="guesthouse">ゲストハウス</option>
+                            </select>
+                        </div>
+                        <div>
+                            <p>施設設備：</p>
+                            <input type="checkbox" id="facility1" name="facility" value="largeBath">大浴場<br>
+                            <input type="checkbox" id="facility2" name="facility" value="campfire">焚火<br>
+                            <input type="checkbox" id="facility3" name="facility" value="projector">プロジェクター<br>
+                            <input type="checkbox" id="facility4" name="facility" value="monitor">モニター<br>
+                            <input type="checkbox" id="facility5" name="facility" value="meetingRoom">会議室<br>
+                        </div>
+                        <button type="submit">検索</button>
+                    </form>
+                </div>
+            </li>
+            <div class="keyword"></div>
+    </div>
+    <div>
+        <a>
+            <span>
+                現在地から探す
+            </span>
+        </a>
+    </div>
+
+   </form> -->
+
+    <!-- <div>新着合宿
+        <div>
+            <div>
+                <div>日付</div>
+                <div>情報</div>
+            </div>
+        </div>
+   </div> -->
+
+
+
+
+
+
+    <!-- コンテンツ表示画面 -->
+    <div class="input">
+        <div class="input-date">
+            <p class="input-title">合宿日</p>
+            <input id="timestart" type="datetime-local">
+        </div>
+        <div class="input-number">
+            <p class="input-title">参加人数</p>
+            <input id="number" type="number" value="0" />
+            <!-- <p>男性</p>
+            <input id="number" type="number" value="0" />
+            <p>女性</p>
+            <input id="number" type="number" value="0" />   -->
+        </div>
+        <div>
+
+        </div>
+        <div class="input-area">
+            <p class="input-title">宿泊施設</p>
+            <input type="text" id="hotel" placeholder="施設のURLをコピペしてください">
+        </div>
+        <div class="input-move">
+            <p class="input-title">移動手段</p>
+            <!-- 車 -->
+            <!-- labelにすることでＵＸ改善する、文字を押しても反応するようになる -->
+            <div>
+                <input type="checkbox" id="car" name="move" value="自動車" />
+                <label for="car">自動車</label>
+            </div>
+            <!-- 電車 -->
+            <div>
+                <input type="checkbox" id="train" name="move" value="電車" />
+                <label for="train">電車</label>
+            </div>
+            <!-- その他 -->
+            <div>
+                <input type="checkbox" id="walk" name="move" value="その他" />
+                <label for="walk">その他</label>
+            </div>
+        </div>
+        <div class="input-memo">
+            <p class="input-title">合宿メモ</p>
+            <textarea id="text" placeholder="合宿の思い出や、企画の内容、アクティビティ、施設の口コミ・感想を書いてみよう。"></textarea>
+        </div>
+        <div class="input-img">
+            <p class="input-title">画像を追加</p>
+            <input type="file" id="imageInput" />
+            <img id="preview" src="" alt="画像プレビュー" />
+        </div>
+        <div class="input-rate">
+            <label class="input-title">おススメ度</label>
+            <select id="reviewRating" name="rating">
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★</option>
+                <option value="3">★★★</option>
+                <option value="2">★★</option>
+                <option value="1">★</option>
+            </select>
+        </div>
+
+
+    </div>
+
+    <!-- 送信ボタン -->
+    <div class="user-button">
+        <button id="send">送信</button>
+        <button id="clear">リセット</button>
+    </div>
+
+    <div class="news">
+        <h2 class="news-title">
+            <span>新着合宿</span>
+        </h2>
+        <p class="news-comment">合宿に行った記録や口コミを残してみよう</p>
+    </div>
+
+
+
+    <!-- 出力エリア -->
+    <div id="output"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+            from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+//   api key をいったん削除。。
+        
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app); //RealtimeDBに接続
+        const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+
+        //追加した画像が表示される設定
+        $(document).ready(function () {
+            $('#imageInput').on('change', function () {
+                var file = $(this).get(0).files[0];
+
+                if (file) {
+                    var reader = new FileReader();
+
+                    reader.onload = function () {
+                        $('#preview').attr('src', reader.result);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+
+        //データ登録(Click)
+        $('#send').on('click', function () {
+            const timestart = $('#timestart').val();
+            const number = $('#number').val();
+            const hotel = $('#hotel').val();
+            const transportations = [];
+            // 名前が "move" でありチェックされた移動手段のチェックボックス要素を選択し、それぞれに対して以下の処理を実行する
+            $('input[name="move"]:checked').each(function () {
+                // 選択された移動手段の値を transportations 配列に追加する
+                transportations.push($(this).val());
+            });
+            const text = $("#text").val(); //要望を取得
+            const imageInput = $("#imageInput").val(); //要望を取得
+            const reviewRating = $('#reviewRating').val(); //評価の値を取得
+            const submissionTime = new Date().toLocaleString(); // 送信時間を取得
+
+            console.log(timestart, 'nameの文字')
+            console.log(number, 'number')
+            console.log(hotel, 'hotelの選択')
+            console.log(transportations, 'transportationsの選択')
+            console.log(text, 'textの文字')
+            console.log(imageInput, 'imageInput')
+            console.log(reviewRating, 'reviewRatingの文字')
+
+
+            // 入力データをオブジェクトとして保存
+            const msg = {
+                timestart: timestart,
+                hotel: hotel,
+                transportation: transportations,
+                number: number,
+                text: text,
+                imageInput: imageInput,
+                reviewRating: reviewRating,
+                submissionTime: submissionTime,
+            };
+
+            $('#timestart').val("");
+            $('#hotel').val("");
+            $('#transportation').val("");
+            $('#number').val("");
+            $('#text').val("");
+            $('#reviewRating').val("");
+            $('#imageInput').val("");
+
+
+
+
+            const newPostRef = push(dbRef); //pushはfirebaseが用意したおまじない　jsのおまじないとは違う！
+
+            set(newPostRef, msg); //setはfirebaseが用意したおまじない
+
+        })
+
+
+
+
+
+
+        // 長いテキストに対して「続きを読む」機能を追加する関数
+        function createReadMoreContent(text, maxLength = 50) {
+            if (text.length <= maxLength) return text;
+
+            // substrメソッドは、指定された開始位置から指定された文字数（maxLength）だけの文字列を取り出します。
+            const shortText = text.substr(0, maxLength);
+            const moreText = text.substr(maxLength);
+
+            return `
+            <span class="visible-text">${shortText}</span><span class="ellipsis">...</span>
+            <span class="more-text" style="display: none;">${moreText}</span>
+            <button class="show-more-btn">続きを読む</button>
+             `;
+        }
+
+        // Firebaseからデータを取得し、ページに表示する
+        onChildAdded(dbRef, function (data) {
+            const msg = data.val();
+            const key = data.key;
+
+            // 取得したテキストに「続きを読む」機能を適用
+            const memoContent = createReadMoreContent(msg.text);
+
+
+            // HTML要素を作成し、ページに追加
+            let html = $(`
+        <div class="${key} post">
+            <p>合宿日：${msg.timestart}</p>
+            <p class="post-hotel">宿泊施設：${msg.hotel}</p>
+            <p>移動手段：${msg.transportation}</p>
+            <p>参加人数：${msg.number}</p>
+            <p class="post-text">${memoContent}</p>
+            <p>${msg.imageInput}</p>
+            <p>評価：${msg.reviewRating}</p>
+            <p>投稿日：${msg.submissionTime}</p> 
+            <div class="like-button" data-key="${key}">
+             <img src="good.png" alt="いいね" class="like-icon">
+             <span class="like-count">0</span>
+            </div>
+        </div>
+    `);
+
+            // 既存の要素に対してイベントリスナーを設定する
+            $('#output').on('click', '.show-more-btn', function (e) {
+                e.preventDefault();
+                const $this = $(this);
+                $this.siblings('.more-text').toggle();
+                $this.siblings('.ellipsis').toggle();
+                $this.text($this.text() === '続きを読む' ? '閉じる' : '続きを読む');
+            });
+
+
+            // 既存のイベントリスナーを削除してから新しいイベントリスナーを追加
+            $('#output').off('click', '.like-button[data-key="' + key + '"]').on('click', '.like-button[data-key="' + key + '"]', function () {
+                const $count = $(this).find('.like-count');
+                let likes = parseInt($count.text());
+                likes++; // カウントを1増やす
+                $count.text(likes);
+            });
+
+            // 出力エリアに追加
+            $('#output').append(html);
+        });
+
+    </script>
+
+
+</body>
+
+</html>
