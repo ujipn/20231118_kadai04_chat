@@ -3,6 +3,7 @@
 ## DEMO
 
   - デプロイしている場合はURLを記入（任意）　　苦戦中、、
+  - https://gsdev26us07-db4d4.web.app/
 
 ## 紹介と使い方
 
