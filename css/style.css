@@ -47,7 +47,7 @@ body {
     border-radius: 5px; /* 角を丸める */
 }
 
-.input-date, .input-number, .input-area, .input-move, .input-memo, .input-img, .input-rate {
+.input-name,.input-date, .input-number, .input-area, .input-move, .input-memo, .input-img, .input-rate {
     width: 100%; /* コンテナの幅に合わせる */
     display: flex;
     align-items: center;

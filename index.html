@@ -99,6 +99,10 @@ ID紐付け
 
     <!-- コンテンツ表示画面 -->
     <div class="input">
+        <div class="input-name">
+            <p class="input-title">ユーザー名</p>
+            <input type="text" id="name" placeholder="名前">
+        </div>
         <div class="input-date">
             <p class="input-title">合宿日</p>
             <input id="timestart" type="datetime-local">
@@ -106,10 +110,6 @@ ID紐付け
         <div class="input-number">
             <p class="input-title">参加人数</p>
             <input id="number" type="number" value="0" />
-            <!-- <p>男性</p>
-            <input id="number" type="number" value="0" />
-            <p>女性</p>
-            <input id="number" type="number" value="0" />   -->
         </div>
         <div>
 
@@ -139,7 +139,7 @@ ID紐付け
         </div>
         <div class="input-memo">
             <p class="input-title">合宿メモ</p>
-            <textarea id="text" placeholder="合宿の思い出や、企画の内容、アクティビティ、施設の口コミ・感想を書いてみよう。"></textarea>
+            <textarea id="text" placeholder="合宿の思い出や、企画の内容、アクティビティ、施設の感想を書いてみよう。"></textarea>
         </div>
         <div class="input-img">
             <p class="input-title">画像を追加</p>
@@ -178,17 +178,23 @@ ID紐付け
     <!-- 出力エリア -->
     <div id="output"></div>
 
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
-        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved, update, onChildChanged }
             from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
         // Your web app's Firebase configuration
-        // const firebaseConfig = {
-  
+        const firebaseConfig = {
+            apiKey: "AIzaSyATTfGemss-OiwcipLLbLzlt5o7Wl9uY6A",
+            authDomain: "kadai04chat-6c441.firebaseapp.com",
+            projectId: "kadai04chat-6c441",
+            storageBucket: "kadai04chat-6c441.appspot.com",
+            messagingSenderId: "993266103930",
+            appId: "1:993266103930:web:a532b57c7568eb28a5edc3"
 
-        // };
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app); //RealtimeDBに接続
@@ -201,19 +207,20 @@ ID紐付け
 
                 if (file) {
                     var reader = new FileReader();
-
                     reader.onload = function () {
                         $('#preview').attr('src', reader.result);
                     }
-
                     reader.readAsDataURL(file);
                 }
             });
         });
 
 
+
+
         //データ登録(Click)
         $('#send').on('click', function () {
+            const name = $('#name').val();
             const timestart = $('#timestart').val();
             const number = $('#number').val();
             const hotel = $('#hotel').val();
@@ -228,7 +235,8 @@ ID紐付け
             const reviewRating = $('#reviewRating').val(); //評価の値を取得
             const submissionTime = new Date().toLocaleString(); // 送信時間を取得
 
-            console.log(timestart, 'nameの文字')
+            console.log(name, 'nameの文字')
+            console.log(timestart, 'timeの文字')
             console.log(number, 'number')
             console.log(hotel, 'hotelの選択')
             console.log(transportations, 'transportationsの選択')
@@ -239,6 +247,7 @@ ID紐付け
 
             // 入力データをオブジェクトとして保存
             const msg = {
+                name: name,
                 timestart: timestart,
                 hotel: hotel,
                 transportation: transportations,
@@ -249,6 +258,7 @@ ID紐付け
                 submissionTime: submissionTime,
             };
 
+            $('#name').val("");
             $('#timestart').val("");
             $('#hotel').val("");
             $('#transportation').val("");
@@ -256,8 +266,6 @@ ID紐付け
             $('#text').val("");
             $('#reviewRating').val("");
             $('#imageInput').val("");
-
-
 
 
             const newPostRef = push(dbRef); //pushはfirebaseが用意したおまじない　jsのおまじないとは違う！
@@ -268,11 +276,8 @@ ID紐付け
 
 
 
-
-
-
         // 長いテキストに対して「続きを読む」機能を追加する関数
-        function createReadMoreContent(text, maxLength = 50) {
+        function createReadMoreContent(text, maxLength = 20) {
             if (text.length <= maxLength) return text;
 
             // substrメソッドは、指定された開始位置から指定された文字数（maxLength）だけの文字列を取り出します。
@@ -298,6 +303,7 @@ ID紐付け
             // HTML要素を作成し、ページに追加
             let html = $(`
         <div class="${key} post">
+            <p>ユーザー名：${msg.name}</p>
             <p>合宿日：${msg.timestart}</p>
             <p class="post-hotel">宿泊施設：${msg.hotel}</p>
             <p>移動手段：${msg.transportation}</p>
@@ -309,7 +315,9 @@ ID紐付け
             <div class="like-button" data-key="${key}">
              <img src="good.png" alt="いいね" class="like-icon">
              <span class="like-count">0</span>
-            </div>
+            </div>       
+             <button class="update" data-key="${key}">編集</button>
+             <button class="remove" data-key="${key}">削除</button>
         </div>
     `);
 
@@ -331,10 +339,18 @@ ID紐付け
                 $count.text(likes);
             });
 
+
             // 出力エリアに追加
             $('#output').append(html);
-        });
 
+            $('#output').on('click', '.remove', function () {
+                if (confirm('本当に削除しますか？')) {
+                    const deleteKey = $(this).data('key');
+                    const deleteRef = ref(db, "chat/" + deleteKey);
+                    remove(deleteRef);
+                }
+            });
+        });
     </script>
 
 
